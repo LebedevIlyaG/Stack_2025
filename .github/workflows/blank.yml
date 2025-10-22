@@ -48,5 +48,5 @@ jobs:
           cd build
           ls
           pwd          
-          ./Test/Stack_tests
+          ./build/test/Stack_tests
           

@@ -57,11 +57,11 @@ inline TStack<T>::TStack()
 template<class T>
 inline TStack<T>::TStack(int len_) : TStack<T>::TStack()
 {
-  if (len < 0)
+  if (len_ < 0)
   {
     throw - 1;
   }
-  else if (len > 0)
+  else if (len_ > 0)
   {
     len = len_;
     data = new T * [len];
@@ -81,7 +81,8 @@ inline TStack<T>::TStack(const TStack& obj) : TStack<T>::TStack()
     data = new T * [len];
     for (int i = 0; i < len; i++)
     {
-      data[i] = new T(obj.data[i]);
+      if (obj.data[i] != nullptr)
+        data[i] = new T(*(obj.data[i]));
     }
   }
   top = obj.top;
@@ -103,11 +104,11 @@ inline TStack<T>::TStack(TStack&& obj)
 template<class T>
 inline TStack<T>::TStack(T** data_, int len_) : TStack<T>::TStack()
 {
-  if (len < 0)
+  if (len_ < 0)
   {
     throw - 1;
   }
-  else if (len > 0)
+  else if (len_ > 0)
   {
     len = len_;
     data = data_;
@@ -296,7 +297,10 @@ inline T TStack<T>::Pop()
   if (IsEmpty())
     throw - 1;
   top--;
-  return data[top + 1];
+  T p = *(data[top]);
+  delete data[top];
+  data[top] = nullptr;
+  return p;
 }
 
 template<class T>
